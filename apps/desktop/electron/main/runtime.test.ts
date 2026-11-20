@@ -24,7 +24,7 @@ describe("app runtime", () => {
     expect(runtime.db.open).toBe(true);
     const report = await runtime.shutdown.run();
     expect(report.failed).toEqual([]);
-    expect(report.completed).toEqual(["sqlite", "logger"]);
+    expect(report.completed).toEqual(["connector-host", "sqlite", "logger"]);
     expect(runtime.db.open).toBe(false);
     expect(readFileSync(join(runtime.paths.logs, "social-explorer.log"), "utf8")).toContain(
       "runtime started",

@@ -1,5 +1,5 @@
 import { app, BrowserWindow, ipcMain, session, type IpcMainInvokeEvent } from "electron";
-import { IPC_CHANNEL_NAMES } from "@social-explorer/contracts";
+import { CONNECTOR_PUSH_CHANNEL, connectorPushEventSchema, IPC_CHANNEL_NAMES } from "@social-explorer/contracts";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { createIpcHandlers } from "./ipc-handlers.js";
@@ -82,11 +82,22 @@ function installSecurity(): void {
   });
 }
 
+function broadcastConnectorPush(runtime: AppRuntime): void {
+  const snapshot = runtime.connectorHost.snapshot();
+  const payload = connectorPushEventSchema.parse({ type: "snapshot", snapshot });
+  for (const window of BrowserWindow.getAllWindows()) {
+    if (!window.isDestroyed()) {
+      window.webContents.send(CONNECTOR_PUSH_CHANNEL, payload);
+    }
+  }
+}
+
 function registerIpc(active: AppRuntime): void {
   const router = createIpcRouter({
     handlers: createIpcHandlers({
       repositories: active.repositories,
       appVersion: app.getVersion(),
+      connectorHost: active.connectorHost,
     }),
     isTrustedSender: (url) => isTrustedAppUrl(url, trusted),
     logger: active.logger,
@@ -120,6 +131,11 @@ if (!app.requestSingleInstanceLock()) {
     runtime = createAppRuntime({
       userDataDir: app.getPath("userData"),
       logLevel: process.env["SOCIAL_EXPLORER_LOG_LEVEL"],
+      onConnectorPush: () => {
+        if (runtime !== undefined) {
+          broadcastConnectorPush(runtime);
+        }
+      },
     });
     registerIpc(runtime);
     mainWindow = createWindow();

@@ -5,7 +5,10 @@ import { datasetSchema } from "./dataset.js";
 import { entitlementSchema } from "./entitlement.js";
 import { mediaReferenceSchema } from "./media.js";
 import { messageSchema } from "./message.js";
+import { connectorUiSnapshotSchema } from "./connector-ui.js";
 import { dateRangePresetSchema, temporalFlowReadModelSchema } from "./temporal.js";
+
+const phoneNumberSchema = z.string().regex(/^\+?[0-9 ()-]{6,20}$/u);
 
 export const ipcChannels = {
   "app:get-info": {
@@ -46,6 +49,30 @@ export const ipcChannels = {
   "entitlement:get": {
     request: z.strictObject({}),
     response: entitlementSchema,
+  },
+  "connector:get-snapshot": {
+    request: z.strictObject({}),
+    response: connectorUiSnapshotSchema,
+  },
+  "connector:start": {
+    request: z.strictObject({ datasetId: idSchema.optional() }),
+    response: connectorUiSnapshotSchema,
+  },
+  "connector:stop": {
+    request: z.strictObject({}),
+    response: connectorUiSnapshotSchema,
+  },
+  "connector:sign-out": {
+    request: z.strictObject({}),
+    response: connectorUiSnapshotSchema,
+  },
+  "connector:clear-auth": {
+    request: z.strictObject({}),
+    response: connectorUiSnapshotSchema,
+  },
+  "connector:request-pairing-code": {
+    request: z.strictObject({ phoneNumber: phoneNumberSchema }),
+    response: connectorUiSnapshotSchema,
   },
 } as const;
 

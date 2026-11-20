@@ -1,5 +1,6 @@
 export * from "./common.js";
 export * from "./connector.js";
+export * from "./connector-ui.js";
 export * from "./dataset.js";
 export * from "./entitlement.js";
 export * from "./identity.js";

@@ -12,6 +12,7 @@
     "test": "vitest run electron shared renderer"
   },
   "dependencies": {
+    "@social-explorer/connector-core": "workspace:*",
     "@social-explorer/contracts": "workspace:*",
     "@social-explorer/database": "workspace:*",
     "@social-explorer/security": "workspace:*",

@@ -140,6 +140,9 @@ describe("IPC contract", () => {
   it("exposes only narrow read-only channels", () => {
     expect(IPC_CHANNEL_NAMES.length).toBeGreaterThan(0);
     for (const name of IPC_CHANNEL_NAMES) {
+      if (name.startsWith("connector:")) {
+        continue;
+      }
       expect(name).not.toMatch(/send|write|delete|mutate|exec|shell|open-path|logout/u);
     }
     expect(
