@@ -1,0 +1,58 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+out/
+release/
+coverage/
+*.tsbuildinfo
+.vite/
+
+# Local application data (database, connector auth, logs, exports, backups, media caches)
+data/
+logs/
+backups/
+exports/
+!fixtures/synthetic/exports/
+connector-auth/
+media-cache/
+thumbnails/
+*.log
+
+# SQLite databases
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+
+# Baileys / connector auth state
+auth/
+auth_info*/
+creds.json
+pre-key-*.json
+session-*.json
+sender-key-*.json
+app-state-sync-key-*.json
+app-state-sync-version-*.json
+
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+
+# OS and editors
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Playwright & test artifacts
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/

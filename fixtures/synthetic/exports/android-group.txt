@@ -1,0 +1,17 @@
+20/01/2026, 18:00 - Messages and calls are end-to-end encrypted. No one outside of this chat, not even WhatsApp, can read or listen to them. Tap to learn more.
+20/01/2026, 18:00 - Alice Example created group "Synthetic Hiking Club"
+20/01/2026, 18:01 - Alice Example added Bob Sample
+20/01/2026, 18:01 - Alice Example added Carol Placeholder
+20/01/2026, 18:05 - Alice Example: Welcome everyone 🥾
+20/01/2026, 18:06 - Carol Placeholder: Thanks! Plan for the weekend:
+- Saturday: easy trail
+- Sunday: rest
+20/01/2026, 18:10 - Bob Sample: <Media omitted>
+20/01/2026, 18:11 - Carol Placeholder: VID-20260120-WA0003.mp4 (file attached)
+20/01/2026, 18:12 - Bob Sample: AUD-20260120-WA0004.wav (file attached)
+20/01/2026, 18:15 - Carol Placeholder: Trail playlist https://open.spotify.com/track/EXAMPLE0002
+20/01/2026, 18:16 - Alice Example: Video https://youtu.be/EXAMPLE0002
+20/01/2026, 18:20 - Bob Sample left
+20/01/2026, 18:21 - Alice Example: Same text, duplicate candidate
+20/01/2026, 18:21 - Alice Example: Same text, duplicate candidate
+21/01/2026, 07:30 - Carol Placeholder: Unicode check: Привет, مرحبا, שלום 🌄
