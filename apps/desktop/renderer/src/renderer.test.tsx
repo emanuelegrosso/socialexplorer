@@ -9,12 +9,12 @@ describe("ui store", () => {
   it("holds only serializable state and updates immutably", () => {
     const store = createUiStore();
     expect(store.getState().activeView).toBe("discover");
-    store.getState().setActiveView("memories");
+    store.getState().setActiveView("analytics");
     store.getState().toggleSidebar();
     store.getState().setActiveDataset("ds-1");
     const snapshot = snapshotUiState(store.getState());
     expect(snapshot).toEqual({
-      activeView: "memories",
+      activeView: "analytics",
       sidebarCollapsed: true,
       activeDatasetId: "ds-1",
     });
@@ -30,11 +30,15 @@ describe("ipc client", () => {
       name: "SocialExplorer",
       version: MOCK_APP_VERSION,
     });
-    expect(await client.listDatasets()).toEqual([]);
+    const datasets = await client.listDatasets();
+    expect(datasets).toHaveLength(1);
     expect((await client.getEntitlement()).tier).toBe("Free");
     await expect(
-      client.api.getTemporalReadModel({ datasetId: "d", preset: "7d" }),
-    ).rejects.toBeInstanceOf(IpcError);
+      client.api.getTemporalReadModel({ datasetId: datasets[0]?.id ?? "x", preset: "7d" }),
+    ).resolves.toMatchObject({ datasetId: datasets[0]?.id });
+    await expect(client.api.getTemporalReadModel({ datasetId: "missing", preset: "7d" })).rejects.toBeInstanceOf(
+      IpcError,
+    );
   });
 
   it("uses the native bridge when present and re-validates its responses", async () => {
@@ -56,22 +60,15 @@ describe("ipc client", () => {
 });
 
 describe("shell", () => {
-  it("renders navigation and status without a DOM", () => {
+  it("renders navigation and dataset chrome without a DOM", () => {
+    const client = createIpcClient({});
     const html = renderToString(
-      <Shell status={{ version: "1.0.0", datasetCount: 2, native: false }} />,
+      <Shell status={{ version: "1.0.0", datasetCount: 1, native: false }} client={client} datasets={[]} />,
     );
-    for (const label of [
-      "Discover",
-      "Memories",
-      "Movie Studio",
-      "Import",
-      "Settings",
-      "1.0.0",
-      "Preview",
-    ]) {
+    for (const label of ["Discover", "Analytics", "Import", "1.0.0"]) {
       expect(html).toContain(label);
     }
     expect(html).toContain('aria-current="page"');
-    expect(renderToString(<Shell status={null} />)).toContain("Connecting");
+    expect(renderToString(<Shell status={null} client={client} datasets={[]} />)).toContain("Import");
   });
 });

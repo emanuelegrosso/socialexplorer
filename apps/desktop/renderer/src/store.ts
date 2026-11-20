@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export const VIEW_IDS = ["discover", "memories", "movie-studio", "import", "settings"] as const;
+export const VIEW_IDS = ["discover", "analytics", "memories", "movie-studio", "import", "settings"] as const;
 export type ViewId = (typeof VIEW_IDS)[number];
 
 export interface UiState {
@@ -24,8 +24,8 @@ export const createUiStore = () =>
     toggleSidebar: () => {
       set((state) => ({ sidebarCollapsed: !state.sidebarCollapsed }));
     },
-    setActiveDataset: (activeDatasetId) => {
-      set({ activeDatasetId });
+    setActiveDataset: (datasetId) => {
+      set({ activeDatasetId: datasetId });
     },
   }));
 

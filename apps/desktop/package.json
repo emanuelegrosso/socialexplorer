@@ -22,12 +22,14 @@
     "@social-explorer/visualization-model": "workspace:*",
     "react": "19.3.1",
     "react-dom": "19.3.1",
+    "three": "^0.187.0",
     "zustand": "catalog:"
   },
   "devDependencies": {
     "@types/node": "catalog:",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
+    "@types/three": "^0.187.0",
     "@vitejs/plugin-react": "6.3.0",
     "electron": "45.4.1",
     "typescript": "catalog:",

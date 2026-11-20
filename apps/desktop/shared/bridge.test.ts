@@ -45,6 +45,7 @@ describe("bridge", () => {
       "pickArchiveFile",
       "previewArchive",
       "rebuildAnalytics",
+      "stageFixture",
       "unmergeContact",
     ]);
     expect(Object.values(bridge).every((v) => typeof v === "function")).toBe(true);

@@ -43,6 +43,9 @@ export interface SocialExplorerApi {
   ): Promise<IpcResponse<"media:list-references">>;
   getEntitlement(): Promise<IpcResponse<"entitlement:get">>;
   pickArchiveFile(): Promise<IpcResponse<"archive-import:pick-file">>;
+  stageFixture(
+    request: IpcRequest<"archive-import:stage-fixture">,
+  ): Promise<IpcResponse<"archive-import:stage-fixture">>;
   previewArchive(
     request: IpcRequest<"archive-import:preview">,
   ): Promise<IpcResponse<"archive-import:preview">>;
@@ -112,6 +115,7 @@ export function createBridge(invoke: IpcInvoke): SocialExplorerApi {
     listMediaReferences: (request) => call("media:list-references", request),
     getEntitlement: () => call("entitlement:get", {}),
     pickArchiveFile: () => call("archive-import:pick-file", {}),
+    stageFixture: (request) => call("archive-import:stage-fixture", request),
     previewArchive: (request) => call("archive-import:preview", request),
     confirmArchive: (request) => call("archive-import:confirm", request),
     commitArchive: (request) => call("archive-import:commit", request),
