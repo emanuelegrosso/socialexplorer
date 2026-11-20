@@ -187,6 +187,50 @@ importers:
         specifier: 'catalog:'
         version: 5.1.0(@types/node@22.20.5)(vite@8.3.8(@types/node@22.20.5))
 
+  packages/media-core:
+    dependencies:
+      '@social-explorer/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@social-explorer/database':
+        specifier: workspace:*
+        version: link:../database
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 22.20.5
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      vitest:
+        specifier: 'catalog:'
+        version: 5.1.0(@types/node@22.20.5)(vite@8.3.8(@types/node@22.20.5))
+
+  packages/media-importers:
+    dependencies:
+      '@social-explorer/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@social-explorer/database':
+        specifier: workspace:*
+        version: link:../database
+      '@social-explorer/importers':
+        specifier: workspace:*
+        version: link:../importers
+      '@social-explorer/media-core':
+        specifier: workspace:*
+        version: link:../media-core
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 22.20.5
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      vitest:
+        specifier: 'catalog:'
+        version: 5.1.0(@types/node@22.20.5)(vite@8.3.8(@types/node@22.20.5))
+
   packages/security:
     dependencies:
       '@napi-rs/keyring':
