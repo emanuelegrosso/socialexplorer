@@ -175,6 +175,22 @@ importers:
         specifier: 'catalog:'
         version: 5.1.0(@types/node@22.20.5)(vite@8.3.8(@types/node@22.20.5))
 
+  packages/licensing:
+    dependencies:
+      zod:
+        specifier: 'catalog:'
+        version: 4.6.7
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 22.20.5
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      vitest:
+        specifier: 'catalog:'
+        version: 5.1.0(@types/node@22.20.5)(vite@8.3.8(@types/node@22.20.5))
+
   packages/security:
     dependencies:
       '@napi-rs/keyring':
@@ -195,6 +211,25 @@ importers:
         version: 5.1.0(@types/node@22.20.5)(vite@8.3.8(@types/node@22.20.5))
 
   packages/shared:
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 22.20.5
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      vitest:
+        specifier: 'catalog:'
+        version: 5.1.0(@types/node@22.20.5)(vite@8.3.8(@types/node@22.20.5))
+
+  services/licensing-api:
+    dependencies:
+      '@social-explorer/licensing':
+        specifier: workspace:*
+        version: link:../../packages/licensing
+      zod:
+        specifier: 'catalog:'
+        version: 4.6.7
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
