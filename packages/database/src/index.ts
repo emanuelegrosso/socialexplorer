@@ -21,6 +21,7 @@ export * from "./repositories-core.js";
 export * from "./repositories-media.js";
 export * from "./repositories-messages.js";
 export * from "./repositories-sync.js";
+export * from "./repositories/media-storytelling.js";
 export * from "./transaction.js";
 
 export interface Repositories {
