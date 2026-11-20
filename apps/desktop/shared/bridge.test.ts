@@ -24,13 +24,20 @@ describe("bridge", () => {
   it("exposes only function members (no raw invoke, no node handles)", () => {
     const bridge = createBridge(() => Promise.resolve({ ok: true, value: null }));
     expect(Object.keys(bridge).sort()).toEqual([
+      "clearConnectorAuth",
       "getAppInfo",
+      "getConnectorSnapshot",
       "getEntitlement",
       "getTemporalReadModel",
       "listConversations",
       "listDatasets",
       "listMediaReferences",
       "listMessagesInRange",
+      "requestConnectorPairingCode",
+      "signOutConnector",
+      "startConnector",
+      "stopConnector",
+      "subscribeConnector",
     ]);
     expect(Object.values(bridge).every((v) => typeof v === "function")).toBe(true);
   });

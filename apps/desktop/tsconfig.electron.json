@@ -6,6 +6,6 @@
     "sourceMap": true,
     "types": ["node"]
   },
-  "include": ["electron/main/**/*.ts", "shared/**/*.ts"],
+  "include": ["electron/main/**/*.ts", "electron/connector-host/**/*.ts", "shared/**/*.ts"],
   "exclude": ["**/*.test.ts"]
 }

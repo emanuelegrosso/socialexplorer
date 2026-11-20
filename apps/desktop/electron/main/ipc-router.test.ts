@@ -7,11 +7,26 @@ import { createIpcRouter } from "./ipc-router.js";
 const TRUSTED = "file:///app/renderer/index.html";
 const isTrustedSender = (url: string | undefined): boolean => url === TRUSTED;
 
+const mockConnectorHost = {
+  snapshot: () => ({
+    connectorEnabled: false,
+    supervisor: { status: "disabled" as const, restartCount: 0 },
+    pairing: {},
+    updatedAtMs: 0,
+  }),
+  start: () => mockConnectorHost.snapshot(),
+  stop: () => Promise.resolve(mockConnectorHost.snapshot()),
+  signOut: () => mockConnectorHost.snapshot(),
+  clearAuth: () => mockConnectorHost.snapshot(),
+  requestPairingCode: () => mockConnectorHost.snapshot(),
+  shutdown: async () => {},
+};
+
 function setup() {
   const repositories = createRepositories(openMemoryDatabase());
   const sink = createMemoryLogSink();
   const router = createIpcRouter({
-    handlers: createIpcHandlers({ repositories, appVersion: "1.2.3" }),
+    handlers: createIpcHandlers({ repositories, appVersion: "1.2.3", connectorHost: mockConnectorHost }),
     isTrustedSender,
     logger: createLogger({ sink }),
   });

@@ -107,3 +107,77 @@ dt {
 dd {
   margin: 0;
 }
+.connector-panel {
+  display: grid;
+  gap: 16px;
+  max-width: 960px;
+}
+.connector-header h2 {
+  margin: 0 0 6px;
+  font-size: 22px;
+}
+.connector-header p {
+  margin: 0;
+  color: var(--muted);
+}
+.connector-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.connector-card {
+  max-width: none;
+}
+.connector-card h3 {
+  margin: 0 0 12px;
+  font-size: 16px;
+}
+.connector-lines {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--text);
+}
+.connector-muted {
+  color: var(--muted);
+  font-size: 14px;
+}
+.connector-error {
+  color: #ffb4b4;
+}
+.connector-qr {
+  font-family: ui-monospace, monospace;
+  word-break: break-all;
+}
+.connector-code {
+  font-size: 28px;
+  letter-spacing: 0.2em;
+  font-weight: 700;
+}
+.connector-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+.connector-actions button {
+  width: auto;
+}
+.connector-field {
+  display: grid;
+  gap: 6px;
+  margin: 12px 0;
+}
+.connector-field input {
+  background: var(--surface-2);
+  border: 1px solid #234;
+  border-radius: 8px;
+  color: var(--text);
+  padding: 10px 12px;
+}
+.connector-debug {
+  margin: 12px 0 0;
+  max-height: 240px;
+  overflow: auto;
+  font-size: 12px;
+  color: var(--muted);
+}

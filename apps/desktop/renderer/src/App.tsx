@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { ConnectorPanel } from "./features/connector/ConnectorPanel";
 import type { RendererIpcClient } from "./ipc-client";
 import { VIEW_IDS, useUiStore, type ViewId } from "./store";
 
@@ -16,7 +17,13 @@ export interface ShellStatus {
   readonly native: boolean;
 }
 
-export function Shell({ status }: { readonly status: ShellStatus | null }) {
+export function Shell({
+  status,
+  children,
+}: {
+  readonly status: ShellStatus | null;
+  readonly children?: ReactNode;
+}) {
   const activeView = useUiStore((state) => state.activeView);
   const collapsed = useUiStore((state) => state.sidebarCollapsed);
   const setActiveView = useUiStore((state) => state.setActiveView);
@@ -51,20 +58,22 @@ export function Shell({ status }: { readonly status: ShellStatus | null }) {
           <h1>{view.title}</h1>
           <p>{view.blurb}</p>
         </header>
-        <section className="card" aria-label="Status">
-          {status === null ? (
-            <p>Connecting to local services...</p>
-          ) : (
-            <dl>
-              <dt>Version</dt>
-              <dd>{status.version}</dd>
-              <dt>Datasets</dt>
-              <dd>{status.datasetCount}</dd>
-              <dt>Runtime</dt>
-              <dd>{status.native ? "Desktop" : "Preview (no desktop bridge)"}</dd>
-            </dl>
-          )}
-        </section>
+        {children ?? (
+          <section className="card" aria-label="Status">
+            {status === null ? (
+              <p>Connecting to local services...</p>
+            ) : (
+              <dl>
+                <dt>Version</dt>
+                <dd>{status.version}</dd>
+                <dt>Datasets</dt>
+                <dd>{status.datasetCount}</dd>
+                <dt>Runtime</dt>
+                <dd>{status.native ? "Desktop" : "Preview (no desktop bridge)"}</dd>
+              </dl>
+            )}
+          </section>
+        )}
       </main>
     </div>
   );
@@ -72,6 +81,7 @@ export function Shell({ status }: { readonly status: ShellStatus | null }) {
 
 export function App({ client }: { readonly client: RendererIpcClient }) {
   const [status, setStatus] = useState<ShellStatus | null>(null);
+  const activeView = useUiStore((state) => state.activeView);
   useEffect(() => {
     let cancelled = false;
     void Promise.all([client.getAppInfo(), client.listDatasets()]).then(([info, datasets]) => {
@@ -87,5 +97,14 @@ export function App({ client }: { readonly client: RendererIpcClient }) {
       cancelled = true;
     };
   }, [client]);
-  return <Shell status={status} />;
+  return (
+    <Shell status={status}>
+      {activeView === "settings" ? (
+        <ConnectorPanel
+          api={client.api}
+          subscribeConnector={(listener) => client.api.subscribeConnector(listener)}
+        />
+      ) : null}
+    </Shell>
+  );
 }

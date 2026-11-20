@@ -9,6 +9,13 @@ import { IpcError, type SocialExplorerApi } from "../../shared/bridge";
 export const MOCK_APP_VERSION = "0.0.0-preview";
 
 /** Headless fallback used by `vite preview` and tests where Electron's preload is absent. */
+const MOCK_CONNECTOR_SNAPSHOT = {
+  connectorEnabled: false,
+  supervisor: { status: "disabled" as const, restartCount: 0 },
+  pairing: {},
+  updatedAtMs: 0,
+};
+
 export function createMockApi(): SocialExplorerApi {
   const unsupported = (): Promise<never> =>
     Promise.reject(new IpcError({ code: "UNSUPPORTED", message: "not available in preview" }));
@@ -20,6 +27,13 @@ export function createMockApi(): SocialExplorerApi {
     getTemporalReadModel: unsupported,
     listMediaReferences: () => Promise.resolve([]),
     getEntitlement: () => Promise.resolve(DEFAULT_FREE_ENTITLEMENT),
+    getConnectorSnapshot: () => Promise.resolve(MOCK_CONNECTOR_SNAPSHOT),
+    startConnector: () => Promise.resolve(MOCK_CONNECTOR_SNAPSHOT),
+    stopConnector: () => Promise.resolve(MOCK_CONNECTOR_SNAPSHOT),
+    signOutConnector: () => Promise.resolve(MOCK_CONNECTOR_SNAPSHOT),
+    clearConnectorAuth: () => Promise.resolve(MOCK_CONNECTOR_SNAPSHOT),
+    requestConnectorPairingCode: () => Promise.resolve(MOCK_CONNECTOR_SNAPSHOT),
+    subscribeConnector: () => () => {},
   };
 }
 

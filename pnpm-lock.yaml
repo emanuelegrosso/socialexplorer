@@ -71,6 +71,9 @@ importers:
 
   apps/desktop:
     dependencies:
+      '@social-explorer/connector-core':
+        specifier: workspace:*
+        version: link:../../packages/connector-core
       '@social-explorer/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts

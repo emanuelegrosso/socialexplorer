@@ -1,4 +1,4 @@
-import type { IpcChannel, IpcRequest, IpcResponse } from "@social-explorer/contracts";
+import type { ConnectorPushEvent, IpcChannel, IpcRequest, IpcResponse } from "@social-explorer/contracts";
 
 export type IpcErrorCode =
   | "UNKNOWN_CHANNEL"
@@ -42,6 +42,15 @@ export interface SocialExplorerApi {
     request: IpcRequest<"media:list-references">,
   ): Promise<IpcResponse<"media:list-references">>;
   getEntitlement(): Promise<IpcResponse<"entitlement:get">>;
+  getConnectorSnapshot(): Promise<IpcResponse<"connector:get-snapshot">>;
+  startConnector(request: IpcRequest<"connector:start">): Promise<IpcResponse<"connector:start">>;
+  stopConnector(): Promise<IpcResponse<"connector:stop">>;
+  signOutConnector(): Promise<IpcResponse<"connector:sign-out">>;
+  clearConnectorAuth(): Promise<IpcResponse<"connector:clear-auth">>;
+  requestConnectorPairingCode(
+    request: IpcRequest<"connector:request-pairing-code">,
+  ): Promise<IpcResponse<"connector:request-pairing-code">>;
+  subscribeConnector(listener: (event: ConnectorPushEvent) => void): () => void;
 }
 
 export type IpcInvoke = (channel: IpcChannel, request: unknown) => Promise<unknown>;
@@ -76,5 +85,12 @@ export function createBridge(invoke: IpcInvoke): SocialExplorerApi {
     getTemporalReadModel: (request) => call("temporal:get-read-model", request),
     listMediaReferences: (request) => call("media:list-references", request),
     getEntitlement: () => call("entitlement:get", {}),
+    getConnectorSnapshot: () => call("connector:get-snapshot", {}),
+    startConnector: (request) => call("connector:start", request),
+    stopConnector: () => call("connector:stop", {}),
+    signOutConnector: () => call("connector:sign-out", {}),
+    clearConnectorAuth: () => call("connector:clear-auth", {}),
+    requestConnectorPairingCode: (request) => call("connector:request-pairing-code", request),
+    subscribeConnector: () => () => {},
   };
 }
