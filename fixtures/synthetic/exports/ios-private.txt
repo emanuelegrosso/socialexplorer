@@ -1,0 +1,15 @@
+[15/01/26, 09:15:00] ‎Messages and calls are end-to-end encrypted. No one outside of this chat, not even WhatsApp, can read or listen to them.
+[15/01/26, 09:16:04] Alice Example: Hello Bob, synthetic iOS chat 👋
+[15/01/26, 09:17:30] Bob Sample: Multiline message
+second line
+third line with UTF-8: café, 日本語
+[15/01/26, 09:20:11] Alice Example: ‎image omitted
+[15/01/26, 09:21:00] Bob Sample: ‎<attached: 00000001-PHOTO-2026-01-15-09-21-00.png>
+[15/01/26, 09:22:45] Alice Example: ‎<attached: 00000002-AUDIO-2026-01-15-09-22-45.wav>
+[15/01/26, 09:30:00] Bob Sample: Music https://open.spotify.com/track/EXAMPLE0003
+[15/01/26, 09:31:00] Alice Example: Video https://www.youtube.com/watch?v=EXAMPLE0003 and https://music.apple.com/us/album/example/0003
+[15/01/26, 09:40:00] ‎Alice Example changed this group's icon
+[15/01/26, 99:99:99] Alice Example: partial line with an impossible time
+[15/01/26 09:50:00] Bob Sample: unparsed line with malformed brackets
+[16/01/26, 00:05:00] ‏שלום from the RTL mark line
+[16/01/26, 08:00:00] ‎Bob Sample: ‎sticker omitted

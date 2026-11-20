@@ -1,0 +1,69 @@
+{
+  "$comment": "100% synthetic connector events. Fake IDs only (555-01xx style numbers, example identifiers).",
+  "events": [
+    {
+      "type": "history.batch",
+      "chats": [
+        { "remoteId": "15551000001@s.whatsapp.net", "title": "Synthetic Private 01" },
+        { "remoteId": "120363000000000001@g.us", "title": "Synthetic Group 01" }
+      ],
+      "contacts": [
+        { "displayName": "Alice Example", "jid": "15551000001@s.whatsapp.net" },
+        { "displayName": "Bob Sample", "jid": "15551000002@s.whatsapp.net" },
+        { "displayName": "Bob Sample", "lid": "00000002@lid" }
+      ],
+      "messages": [
+        {
+          "remoteId": "15551000001@s.whatsapp.net",
+          "messageId": "SYNTH-H-0001",
+          "fromMe": false,
+          "timestampMs": 1768468800000,
+          "kind": "text",
+          "text": "history message one",
+          "hasAttachment": false
+        },
+        {
+          "remoteId": "120363000000000001@g.us",
+          "messageId": "SYNTH-H-0002",
+          "participantId": "15551000002@s.whatsapp.net",
+          "fromMe": false,
+          "timestampMs": 1768468860000,
+          "kind": "text",
+          "text": "history group message",
+          "hasAttachment": false
+        }
+      ]
+    },
+    {
+      "type": "message.upsert",
+      "message": {
+        "remoteId": "15551000001@s.whatsapp.net",
+        "messageId": "SYNTH-L-0003",
+        "fromMe": true,
+        "timestampMs": 1768468920000,
+        "kind": "text",
+        "text": "live message",
+        "hasAttachment": false
+      }
+    },
+    {
+      "type": "message.reaction",
+      "remoteId": "15551000001@s.whatsapp.net",
+      "messageId": "SYNTH-H-0001",
+      "reactorId": "15551000002@s.whatsapp.net",
+      "emoji": "👍",
+      "timestampMs": 1768468980000
+    },
+    {
+      "type": "group.metadata",
+      "remoteId": "120363000000000001@g.us",
+      "title": "Synthetic Group 01",
+      "participantIds": ["15551000001@s.whatsapp.net", "15551000002@s.whatsapp.net"]
+    },
+    {
+      "type": "identity.link",
+      "jid": "15551000002@s.whatsapp.net",
+      "lid": "00000002@lid"
+    }
+  ]
+}
