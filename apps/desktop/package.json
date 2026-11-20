@@ -1,0 +1,33 @@
+{
+  "name": "@social-explorer/desktop",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/electron/main/index.js",
+  "scripts": {
+    "dev:renderer": "vite",
+    "build": "tsc -p tsconfig.electron.json && vite build --config vite.preload.config.ts && vite build",
+    "typecheck": "tsc -p tsconfig.json",
+    "start": "electron .",
+    "test": "vitest run electron shared renderer"
+  },
+  "dependencies": {
+    "@social-explorer/contracts": "workspace:*",
+    "@social-explorer/database": "workspace:*",
+    "@social-explorer/security": "workspace:*",
+    "@social-explorer/shared": "workspace:*",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "zustand": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.3.0",
+    "electron": "45.4.1",
+    "typescript": "catalog:",
+    "vite": "8.3.8",
+    "vitest": "catalog:"
+  }
+}
