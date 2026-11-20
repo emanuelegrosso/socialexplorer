@@ -14,6 +14,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "pnpm build && vitest run",
+    "bench": "pnpm build && vitest run --config vitest.bench.config.ts",
+    "test:e2e": "pnpm --filter @social-explorer/desktop test:e2e",
     "clean": "node -e \"import('node:fs').then(async ({rmSync, readdirSync, existsSync}) => { const dirs = ['apps', 'packages', 'services']; for (const root of dirs) { if (!existsSync(root)) continue; for (const entry of readdirSync(root)) { for (const target of ['dist', 'coverage', 'tsconfig.tsbuildinfo', 'tsconfig.build.tsbuildinfo']) { rmSync(root + '/' + entry + '/' + target, { recursive: true, force: true }); } } } rmSync('coverage', { recursive: true, force: true }); })\""
   },
   "devDependencies": {

@@ -4,7 +4,6 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -12,8 +11,8 @@ concurrency:
 
 jobs:
   verify:
-    name: Typecheck, Lint, Build & Test (Synthetic Fixtures)
-    runs-on: ubuntu-latest
+    name: Typecheck, Lint, Build, Test & Bench
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -40,3 +39,40 @@ jobs:
 
       - name: Test (synthetic fixtures only)
         run: pnpm test
+
+      - name: Performance bench (1k / 10k synthetic)
+        run: pnpm bench
+
+  e2e:
+    name: Playwright renderer smoke (WX-070)
+    # Playwright 1.56 browser deps do not support ubuntu-26.04 runners yet (see GH Actions image notes).
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build workspace (renderer E2E dependencies)
+        run: pnpm build
+
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install chromium
+        working-directory: apps/desktop
+
+      - name: Playwright E2E
+        run: pnpm test:e2e
+        env:
+          CI: true

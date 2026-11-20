@@ -10,5 +10,6 @@ export default defineConfig({
       "services/**/*.test.ts",
       "tests/**/*.test.ts",
     ],
+    exclude: ["**/node_modules/**", "**/*.bench.test.ts"],
   },
 });

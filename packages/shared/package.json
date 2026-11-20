@@ -9,6 +9,9 @@
       "import": "./dist/index.js"
     }
   },
+  "dependencies": {
+    "@noble/hashes": "catalog:"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json",

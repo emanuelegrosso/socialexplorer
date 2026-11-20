@@ -9,7 +9,9 @@
     "build": "tsc -p tsconfig.electron.json && vite build --config vite.preload.config.ts && vite build",
     "typecheck": "tsc -p tsconfig.json",
     "start": "electron .",
-    "test": "vitest run electron shared renderer"
+    "preview": "vite preview",
+    "test": "vitest run electron shared renderer",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@social-explorer/analytics": "workspace:*",
@@ -32,6 +34,7 @@
     "@types/react-dom": "19.3.0",
     "@types/three": "^0.187.0",
     "@vitejs/plugin-react": "6.3.0",
+    "@playwright/test": "1.56.1",
     "electron": "45.4.1",
     "typescript": "catalog:",
     "vite": "8.3.8",
