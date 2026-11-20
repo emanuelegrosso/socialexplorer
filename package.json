@@ -14,7 +14,9 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "pnpm build && vitest run",
-    "clean": "node -e \"import('node:fs').then(async ({rmSync, readdirSync, existsSync}) => { const dirs = ['apps', 'packages', 'services']; for (const root of dirs) { if (!existsSync(root)) continue; for (const entry of readdirSync(root)) { for (const target of ['dist', 'coverage', 'tsconfig.tsbuildinfo', 'tsconfig.build.tsbuildinfo']) { rmSync(root + '/' + entry + '/' + target, { recursive: true, force: true }); } } } rmSync('coverage', { recursive: true, force: true }); })\""
+    "clean": "node -e \"import('node:fs').then(async ({rmSync, readdirSync, existsSync}) => { const dirs = ['apps', 'packages', 'services']; for (const root of dirs) { if (!existsSync(root)) continue; for (const entry of readdirSync(root)) { for (const target of ['dist', 'coverage', 'tsconfig.tsbuildinfo', 'tsconfig.build.tsbuildinfo']) { rmSync(root + '/' + entry + '/' + target, { recursive: true, force: true }); } } } rmSync('coverage', { recursive: true, force: true }); })\"",
+    "package:desktop": "pnpm --filter @social-explorer/desktop package",
+    "package:desktop:dir": "pnpm --filter @social-explorer/desktop package:win-dir"
   },
   "devDependencies": {
     "@eslint/js": "catalog:",
