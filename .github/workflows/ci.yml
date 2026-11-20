@@ -45,7 +45,8 @@ jobs:
 
   e2e:
     name: Playwright renderer smoke (WX-070)
-    runs-on: ubuntu-latest
+    # Playwright 1.56 browser deps do not support ubuntu-26.04 runners yet (see GH Actions image notes).
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
