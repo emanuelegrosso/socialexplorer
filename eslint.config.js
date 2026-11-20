@@ -25,6 +25,7 @@ export default tseslint.config(
             "eslint.config.js",
             "prettier.config.js",
             "vitest.config.ts",
+            "vitest.bench.config.ts",
           ],
         },
         tsconfigRootDir: import.meta.dirname,

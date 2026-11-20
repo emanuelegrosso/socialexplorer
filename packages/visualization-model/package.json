@@ -19,6 +19,8 @@
     "@social-explorer/domain": "workspace:*"
   },
   "devDependencies": {
+    "@social-explorer/analytics": "workspace:*",
+    "@social-explorer/database": "workspace:*",
     "@types/node": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"

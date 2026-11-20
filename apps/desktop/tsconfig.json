@@ -8,5 +8,13 @@
     "types": ["node", "vite/client"],
     "jsx": "react-jsx"
   },
-  "include": ["electron", "shared", "renderer", "vite.config.ts", "vite.preload.config.ts"]
+  "include": [
+    "electron",
+    "shared",
+    "renderer",
+    "e2e",
+    "vite.config.ts",
+    "vite.preload.config.ts",
+    "playwright.config.ts"
+  ]
 }
