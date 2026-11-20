@@ -69,6 +69,12 @@ export const ipcChannels = {
     request: z.strictObject({}),
     response: archivePickFileResultSchema,
   },
+  "archive-import:stage-fixture": {
+    request: z.strictObject({
+      file: z.enum(["android-private", "android-group", "ios-private", "ios-group"]),
+    }),
+    response: archivePickFileResultSchema,
+  },
   "archive-import:preview": {
     request: z.strictObject({ stagedId: idSchema }),
     response: archivePreviewSchema,

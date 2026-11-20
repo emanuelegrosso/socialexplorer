@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { createHash, randomUUID } from "node:crypto";
 import type {
   ArchiveCommitResult,
@@ -60,6 +62,15 @@ interface Staged {
   };
 }
 
+const FIXTURE_ROOT = resolve(import.meta.dirname, "../../../../fixtures/synthetic");
+
+const FIXTURE_FILES = {
+  "android-private": "exports/android-private.txt",
+  "android-group": "exports/android-group.txt",
+  "ios-private": "exports/ios-private.txt",
+  "ios-group": "exports/ios-group.txt",
+} as const;
+
 const excerpt = (text: string): string => {
   const flat = text.replace(/\s+/gu, " ").trim();
   return flat.length > 80 ? `${flat.slice(0, 79)}…` : flat;
@@ -95,6 +106,18 @@ export class ArchiveImportService {
       contentHash: createHash("sha256").update(archive.data).digest("hex"),
     });
     return id;
+  }
+
+  stageFixture(file: keyof typeof FIXTURE_FILES): ArchivePickFileResult {
+    const relative = FIXTURE_FILES[file];
+    const data = readFileSync(resolve(FIXTURE_ROOT, relative));
+    const name = relative.split("/").pop() ?? relative;
+    return {
+      canceled: false,
+      stagedId: this.stage({ name, data: new Uint8Array(data) }),
+      name,
+      sizeBytes: data.length,
+    };
   }
 
   async pickFile(): Promise<ArchivePickFileResult> {

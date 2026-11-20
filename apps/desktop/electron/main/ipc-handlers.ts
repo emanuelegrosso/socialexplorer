@@ -55,6 +55,7 @@ export function createIpcHandlers(options: IpcHandlerOptions): IpcHandlers {
     "entitlement:get": () => DEFAULT_FREE_ENTITLEMENT,
 
     "archive-import:pick-file": () => imports.pickFile(),
+    "archive-import:stage-fixture": (request) => imports.stageFixture(request.file),
     "archive-import:preview": (request) => imports.preview(request.stagedId),
     "archive-import:confirm": (request) => imports.confirm(request),
     "archive-import:commit": (request) => imports.commit(request),

@@ -107,3 +107,206 @@ dt {
 dd {
   margin: 0;
 }
+.content-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.dataset-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--muted);
+}
+.dataset-picker select {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--surface-2);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+.banner {
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: var(--surface-2);
+}
+.resumable-banner {
+  border-left: 3px solid var(--accent);
+}
+.muted {
+  color: var(--muted);
+}
+.error {
+  color: #ff8b8b;
+}
+.warning {
+  color: #ffd27a;
+}
+.card.wide {
+  max-width: 720px;
+}
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.button-row button {
+  width: auto;
+}
+.temporal-page,
+.analytics-page,
+.import-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: calc(100vh - 140px);
+}
+.temporal-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.range-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.range-bar button {
+  width: auto;
+  padding: 6px 10px;
+}
+.range-bar button[data-active="true"] {
+  background: var(--surface-2);
+  color: var(--accent);
+}
+.range-custom {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.search-field,
+.filter-row,
+.playback-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.search-field input,
+.import-page select,
+.import-page label select {
+  background: var(--surface);
+  border: 1px solid var(--surface-2);
+  border-radius: 8px;
+  color: var(--text);
+  padding: 8px 10px;
+}
+.playback-row button[data-active="true"] {
+  color: var(--accent);
+}
+.scrubber {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.temporal-body {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 16px;
+  flex: 1;
+  min-height: 360px;
+}
+.temporal-stage {
+  position: relative;
+  min-height: 360px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #071321;
+}
+.temporal-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: grab;
+}
+.temporal-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.temporal-label {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: auto;
+}
+.temporal-label-lane {
+  background: color-mix(in srgb, var(--lane-color, #8fa6bc) 22%, transparent);
+  border: 1px solid var(--lane-color, #8fa6bc);
+  border-radius: 6px;
+  padding: 2px 6px;
+}
+.side-panel {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 16px;
+  overflow: auto;
+}
+.participant-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.participant-list button {
+  width: 100%;
+}
+.participant-list button[data-active="true"] {
+  color: var(--accent);
+}
+.selection-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.selection-bar button {
+  width: auto;
+}
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+.metric-card {
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 14px;
+}
+.bar-chart {
+  display: grid;
+  gap: 6px;
+}
+.bar-row {
+  display: grid;
+  grid-template-columns: 80px 1fr 40px;
+  gap: 8px;
+  align-items: center;
+  font-size: 13px;
+}
+.bar-track {
+  background: var(--surface);
+  border-radius: 4px;
+  height: 10px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  background: var(--accent);
+}
+.explorer-fallback {
+  padding: 16px;
+  color: var(--muted);
+}
