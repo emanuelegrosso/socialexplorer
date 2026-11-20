@@ -17,6 +17,7 @@
     "@social-explorer/database": "workspace:*",
     "@social-explorer/domain": "workspace:*",
     "@social-explorer/importers": "workspace:*",
+    "@social-explorer/media-core": "workspace:*",
     "@social-explorer/security": "workspace:*",
     "@social-explorer/shared": "workspace:*",
     "@social-explorer/visualization-model": "workspace:*",

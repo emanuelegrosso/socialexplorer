@@ -42,6 +42,7 @@ export function TemporalPage(props: {
   readonly timezone: string;
   readonly coverageStart?: string | undefined;
   readonly coverageEnd?: string | undefined;
+  readonly focusMessageId?: string | undefined;
 }) {
   const dateRange = useDateRangeStore();
   const [model, setModel] = useState<TemporalFlowReadModel | null>(null);
@@ -195,6 +196,11 @@ export function TemporalPage(props: {
 
   return (
     <div className="temporal-page">
+      {props.focusMessageId !== undefined ? (
+        <div className="banner focus-banner" role="status">
+          Navigated from Memories — source message <code>{props.focusMessageId}</code>
+        </div>
+      ) : null}
       <header className="temporal-toolbar">
         <DateRangeBar
           choice={dateRange.selection.choice}

@@ -86,6 +86,9 @@ importers:
       '@social-explorer/importers':
         specifier: workspace:*
         version: link:../../packages/importers
+      '@social-explorer/media-core':
+        specifier: workspace:*
+        version: link:../../packages/media-core
       '@social-explorer/security':
         specifier: workspace:*
         version: link:../../packages/security

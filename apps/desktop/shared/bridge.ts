@@ -80,6 +80,33 @@ export interface SocialExplorerApi {
   rebuildAnalytics(
     request: IpcRequest<"analytics:rebuild">,
   ): Promise<IpcResponse<"analytics:rebuild">>;
+  queryMediaCatalog(
+    request: IpcRequest<"media:query-catalog">,
+  ): Promise<IpcResponse<"media:query-catalog">>;
+  getOnThisDay(
+    request: IpcRequest<"memories:on-this-day">,
+  ): Promise<IpcResponse<"memories:on-this-day">>;
+  listBookmarks(
+    request: IpcRequest<"annotation:list-bookmarks">,
+  ): Promise<IpcResponse<"annotation:list-bookmarks">>;
+  toggleBookmark(
+    request: IpcRequest<"annotation:toggle-bookmark">,
+  ): Promise<IpcResponse<"annotation:toggle-bookmark">>;
+  listMemoryCards(
+    request: IpcRequest<"memory-card:list">,
+  ): Promise<IpcResponse<"memory-card:list">>;
+  saveMemoryCard(
+    request: IpcRequest<"memory-card:save">,
+  ): Promise<IpcResponse<"memory-card:save">>;
+  removeMemoryCard(
+    request: IpcRequest<"memory-card:remove">,
+  ): Promise<IpcResponse<"memory-card:remove">>;
+  getFirstRunStatus(): Promise<IpcResponse<"demo:get-first-run">>;
+  seedSyntheticDemo(
+    request: IpcRequest<"demo:seed-synthetic">,
+  ): Promise<IpcResponse<"demo:seed-synthetic">>;
+  skipFirstRun(): Promise<IpcResponse<"demo:skip-first-run">>;
+  resetSyntheticDemo(): Promise<IpcResponse<"demo:reset-synthetic">>;
 }
 
 export type IpcInvoke = (channel: IpcChannel, request: unknown) => Promise<unknown>;
@@ -130,5 +157,16 @@ export function createBridge(invoke: IpcInvoke): SocialExplorerApi {
     getGroupAnalytics: (request) => call("analytics:get-group", request),
     getRelations: (request) => call("analytics:get-relations", request),
     rebuildAnalytics: (request) => call("analytics:rebuild", request),
+    queryMediaCatalog: (request) => call("media:query-catalog", request),
+    getOnThisDay: (request) => call("memories:on-this-day", request),
+    listBookmarks: (request) => call("annotation:list-bookmarks", request),
+    toggleBookmark: (request) => call("annotation:toggle-bookmark", request),
+    listMemoryCards: (request) => call("memory-card:list", request),
+    saveMemoryCard: (request) => call("memory-card:save", request),
+    removeMemoryCard: (request) => call("memory-card:remove", request),
+    getFirstRunStatus: () => call("demo:get-first-run", {}),
+    seedSyntheticDemo: (request) => call("demo:seed-synthetic", request),
+    skipFirstRun: () => call("demo:skip-first-run", {}),
+    resetSyntheticDemo: () => call("demo:reset-synthetic", {}),
   };
 }
