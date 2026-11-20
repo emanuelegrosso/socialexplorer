@@ -192,6 +192,69 @@ export function createMockApi(): SocialExplorerApi {
       }),
     rebuildAnalytics: () =>
       Promise.resolve({ datasetId: DEMO_DATASET_ID, daily: 1, hourly: 1, messages: 1, version: 1 }),
+    queryMediaCatalog: (request) => {
+      if (request.datasetId !== DEMO_DATASET_ID) {
+        return unsupported();
+      }
+      return Promise.resolve([
+        {
+          reference: {
+            id: "ref_demo",
+            datasetId: DEMO_DATASET_ID,
+            conversationId: "conv_demo",
+            messageId: "msg_demo",
+            timestampLocal: "2026-01-15T09:20:00",
+            availability: "missing",
+          },
+          mediaType: "photo",
+          message: {
+            id: "msg_demo",
+            conversationId: "conv_demo",
+            timestampLocal: "2026-01-15T09:20:00",
+            kind: "image",
+            text: "IMG-20260115-WA0001.png",
+          },
+        },
+      ]);
+    },
+    getOnThisDay: (request) => {
+      if (request.datasetId !== DEMO_DATASET_ID) {
+        return unsupported();
+      }
+      return Promise.resolve({
+        monthDay: "01-15",
+        timezone: "Europe/Rome",
+        referenceDate: request.referenceAt ?? "2026-01-15T12:00:00.000Z",
+        media: [],
+        messages: [],
+        coverageNote: "Preview mock — import synthetic data for full On This Day coverage.",
+      });
+    },
+    listBookmarks: () => Promise.resolve([]),
+    toggleBookmark: (request) =>
+      Promise.resolve({
+        id: "ann_demo",
+        datasetId: request.datasetId,
+        targetKind: request.targetKind,
+        targetId: request.targetId,
+        bookmarked: request.bookmarked,
+        createdAt: "2026-01-01T00:00:00.000Z",
+        updatedAt: "2026-01-01T00:00:00.000Z",
+      }),
+    listMemoryCards: () => Promise.resolve([]),
+    saveMemoryCard: (request) => Promise.resolve(request),
+    removeMemoryCard: () => Promise.resolve({ removed: true }),
+    getFirstRunStatus: () =>
+      Promise.resolve({ state: "seeded", datasetId: DEMO_DATASET_ID, datasetName: "Synthetic demo" }),
+    seedSyntheticDemo: () =>
+      Promise.resolve({
+        datasetId: DEMO_DATASET_ID,
+        status: "already-seeded",
+        messageCount: 10,
+        mediaReferenceCount: 2,
+      }),
+    skipFirstRun: () => Promise.resolve({ state: "skipped" }),
+    resetSyntheticDemo: () => Promise.resolve({ state: "pending" }),
   };
 }
 

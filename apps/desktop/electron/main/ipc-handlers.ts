@@ -2,14 +2,25 @@ import { createAnalyticsEngine, loadEntityContext, loadMessageFacts } from "@soc
 import { DEFAULT_FREE_ENTITLEMENT } from "@social-explorer/contracts";
 import type { Repositories, SqliteDatabase } from "@social-explorer/database";
 import { ContactMergeError } from "@social-explorer/domain";
+import { createMediaCatalog } from "@social-explorer/media-core";
 import { buildTemporalFlowReadModel, resolveRange, TemporalRangeError } from "@social-explorer/visualization-model";
+import { randomUUID } from "node:crypto";
 import { ArchiveImportService, type PickedArchive } from "./import-service.js";
+import {
+  getFirstRunStatus,
+  resetSyntheticDemo,
+  seedSyntheticDemo,
+  skipFirstRun,
+} from "./demo-service.js";
 import { IpcRejectedError, type IpcHandlers } from "./ipc-router.js";
+import { listMemoryCards, removeMemoryCard, saveMemoryCard } from "./memory-cards.js";
+import { mapCatalogResults, queryOnThisDay } from "./memories-service.js";
 
 export interface IpcHandlerOptions {
   readonly repositories: Repositories;
   readonly db: SqliteDatabase;
   readonly appVersion: string;
+  readonly userDataDir?: string;
   readonly pickArchiveFile?: () => Promise<PickedArchive | undefined>;
   readonly now?: () => string;
   /** Exposed so tests can stage archives without a native dialog. */
@@ -44,6 +55,8 @@ export function createIpcHandlers(options: IpcHandlerOptions): IpcHandlers {
       pickFile: options.pickArchiveFile,
       now,
     });
+  const userDataDir = options.userDataDir ?? "";
+  const catalog = createMediaCatalog(db);
 
   return {
     "app:get-info": () => ({ name: "SocialExplorer", version: options.appVersion }),
@@ -164,6 +177,120 @@ export function createIpcHandlers(options: IpcHandlerOptions): IpcHandlers {
           datasetCoverage: { start: dataset.coverageStart, end: dataset.coverageEnd },
         });
       }),
+
+    "media:query-catalog": (request) =>
+      rejectKnown(() => {
+        if (repositories.datasets.get(request.datasetId) === undefined) {
+          throw new IpcRejectedError("dataset not found");
+        }
+        return mapCatalogResults(
+          catalog.query({
+            datasetId: request.datasetId,
+            ...(request.conversationId === undefined
+              ? {}
+              : { conversationId: request.conversationId }),
+            ...(request.contactId === undefined ? {} : { contactId: request.contactId }),
+            ...(request.mediaType === undefined ? {} : { mediaType: request.mediaType }),
+            ...(request.from === undefined ? {} : { from: request.from }),
+            ...(request.to === undefined ? {} : { to: request.to }),
+            ...(request.limit === undefined ? {} : { limit: request.limit }),
+            ...(request.offset === undefined ? {} : { offset: request.offset }),
+          }),
+        );
+      }),
+
+    "memories:on-this-day": (request) => {
+      try {
+        return queryOnThisDay({
+          db,
+          repositories,
+          catalog,
+          datasetId: request.datasetId,
+          referenceAt: request.referenceAt ?? now(),
+          now,
+        });
+      } catch (error) {
+        if (error instanceof IpcRejectedError) {
+          throw error;
+        }
+        throw error;
+      }
+    },
+
+    "annotation:list-bookmarks": (request) =>
+      rejectKnown(() => {
+        if (repositories.datasets.get(request.datasetId) === undefined) {
+          throw new IpcRejectedError("dataset not found");
+        }
+        return repositories.annotations.listBookmarks(request.datasetId);
+      }),
+
+    "annotation:toggle-bookmark": (request) =>
+      rejectKnown(() => {
+        if (repositories.datasets.get(request.datasetId) === undefined) {
+          throw new IpcRejectedError("dataset not found");
+        }
+        const existing = repositories.annotations
+          .listByTarget(request.datasetId, request.targetKind, request.targetId)
+          .find((row) => row.bookmarked || row.note !== undefined);
+        const timestamp = now();
+        const annotation = {
+          id: existing?.id ?? `ann_${randomUUID()}`,
+          datasetId: request.datasetId,
+          targetKind: request.targetKind,
+          targetId: request.targetId,
+          bookmarked: request.bookmarked,
+          createdAt: existing?.createdAt ?? timestamp,
+          updatedAt: timestamp,
+          ...(request.note === undefined
+            ? existing?.note === undefined
+              ? {}
+              : { note: existing.note }
+            : { note: request.note }),
+        };
+        repositories.annotations.upsert(annotation);
+        const saved = repositories.annotations.get(annotation.id);
+        if (saved === undefined) {
+          throw new IpcRejectedError("bookmark save failed");
+        }
+        return saved;
+      }),
+
+    "memory-card:list": (request) =>
+      rejectKnown(() => {
+        if (repositories.datasets.get(request.datasetId) === undefined) {
+          throw new IpcRejectedError("dataset not found");
+        }
+        return listMemoryCards(db, request.datasetId);
+      }),
+
+    "memory-card:save": (request) =>
+      rejectKnown(() => {
+        if (repositories.datasets.get(request.datasetId) === undefined) {
+          throw new IpcRejectedError("dataset not found");
+        }
+        return saveMemoryCard(repositories, request, now());
+      }),
+
+    "memory-card:remove": (request) =>
+      rejectKnown(() => ({
+        removed: removeMemoryCard(repositories, request.datasetId, request.cardId),
+      })),
+
+    "demo:get-first-run": () => getFirstRunStatus(userDataDir, repositories),
+
+    "demo:seed-synthetic": async (request) =>
+      seedSyntheticDemo({
+        userDataDir,
+        repositories,
+        db,
+        imports,
+        ...(request.force === undefined ? {} : { force: request.force }),
+      }),
+
+    "demo:skip-first-run": () => skipFirstRun(userDataDir),
+
+    "demo:reset-synthetic": () => resetSyntheticDemo(userDataDir, repositories),
   };
 }
 

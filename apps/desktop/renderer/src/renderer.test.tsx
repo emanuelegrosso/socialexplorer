@@ -8,7 +8,7 @@ import { createUiStore, snapshotUiState } from "./store";
 describe("ui store", () => {
   it("holds only serializable state and updates immutably", () => {
     const store = createUiStore();
-    expect(store.getState().activeView).toBe("discover");
+    expect(store.getState().activeView).toBe("home");
     store.getState().setActiveView("analytics");
     store.getState().toggleSidebar();
     store.getState().setActiveDataset("ds-1");
@@ -17,12 +17,21 @@ describe("ui store", () => {
       activeView: "analytics",
       sidebarCollapsed: true,
       activeDatasetId: "ds-1",
+      pendingFocusMessageId: null,
     });
     expect(JSON.parse(JSON.stringify(snapshot))).toEqual(snapshot);
   });
 });
 
 describe("ipc client", () => {
+  it("exposes first-run demo status in preview mode", async () => {
+    const client = createIpcClient({});
+    await expect(client.api.getFirstRunStatus()).resolves.toMatchObject({
+      state: "seeded",
+      datasetName: "Synthetic demo",
+    });
+  });
+
   it("falls back to a headless mock without the preload bridge", async () => {
     const client = createIpcClient({});
     expect(client.isNative).toBe(false);
@@ -63,12 +72,21 @@ describe("shell", () => {
   it("renders navigation and dataset chrome without a DOM", () => {
     const client = createIpcClient({});
     const html = renderToString(
-      <Shell status={{ version: "1.0.0", datasetCount: 1, native: false }} client={client} datasets={[]} />,
+      <Shell
+        status={{ version: "1.0.0", datasetCount: 1, native: false }}
+        client={client}
+        datasets={[]}
+        onDatasetsChange={() => undefined}
+      />,
     );
-    for (const label of ["Discover", "Analytics", "Import", "1.0.0"]) {
+    for (const label of ["Home", "Memories", "Timeline", "Archive Import"]) {
       expect(html).toContain(label);
     }
     expect(html).toContain('aria-current="page"');
-    expect(renderToString(<Shell status={null} client={client} datasets={[]} />)).toContain("Import");
+    expect(
+      renderToString(
+        <Shell status={null} client={client} datasets={[]} onDatasetsChange={() => undefined} />,
+      ),
+    ).toContain("Home");
   });
 });

@@ -26,7 +26,15 @@ import {
 import { datasetSchema } from "./dataset.js";
 import { entitlementSchema } from "./entitlement.js";
 import { mediaReferenceSchema } from "./media.js";
-import { messageSchema } from "./message.js";
+import { annotationSchema, messageSchema } from "./message.js";
+import {
+  catalogMediaTypeSchema,
+  demoSeedResultSchema,
+  firstRunStatusSchema,
+  mediaCatalogEntrySchema,
+  memoryCardSchema,
+  onThisDayResultSchema,
+} from "./memories.js";
 import { dateRangePresetSchema, temporalFlowReadModelSchema } from "./temporal.js";
 
 export const ipcChannels = {
@@ -150,6 +158,68 @@ export const ipcChannels = {
   "entitlement:get": {
     request: z.strictObject({}),
     response: entitlementSchema,
+  },
+  "media:query-catalog": {
+    request: z.strictObject({
+      datasetId: idSchema,
+      conversationId: idSchema.optional(),
+      contactId: idSchema.optional(),
+      mediaType: catalogMediaTypeSchema.optional(),
+      from: isoUtcSchema.optional(),
+      to: isoUtcSchema.optional(),
+      limit: z.number().int().positive().max(500).optional(),
+      offset: z.number().int().nonnegative().optional(),
+    }),
+    response: z.array(mediaCatalogEntrySchema),
+  },
+  "memories:on-this-day": {
+    request: z.strictObject({
+      datasetId: idSchema,
+      referenceAt: isoUtcSchema.optional(),
+    }),
+    response: onThisDayResultSchema,
+  },
+  "annotation:list-bookmarks": {
+    request: z.strictObject({ datasetId: idSchema }),
+    response: z.array(annotationSchema),
+  },
+  "annotation:toggle-bookmark": {
+    request: z.strictObject({
+      datasetId: idSchema,
+      targetKind: z.enum(["message", "media", "conversation", "contact", "time-interval"]),
+      targetId: idSchema,
+      bookmarked: z.boolean(),
+      note: z.string().max(2000).optional(),
+    }),
+    response: annotationSchema,
+  },
+  "memory-card:list": {
+    request: z.strictObject({ datasetId: idSchema }),
+    response: z.array(memoryCardSchema),
+  },
+  "memory-card:save": {
+    request: memoryCardSchema,
+    response: memoryCardSchema,
+  },
+  "memory-card:remove": {
+    request: z.strictObject({ datasetId: idSchema, cardId: idSchema }),
+    response: z.strictObject({ removed: z.boolean() }),
+  },
+  "demo:get-first-run": {
+    request: z.strictObject({}),
+    response: firstRunStatusSchema,
+  },
+  "demo:seed-synthetic": {
+    request: z.strictObject({ force: z.boolean().optional() }),
+    response: demoSeedResultSchema,
+  },
+  "demo:skip-first-run": {
+    request: z.strictObject({}),
+    response: firstRunStatusSchema,
+  },
+  "demo:reset-synthetic": {
+    request: z.strictObject({}),
+    response: firstRunStatusSchema,
   },
 } as const;
 

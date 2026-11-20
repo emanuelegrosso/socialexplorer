@@ -86,6 +86,9 @@ importers:
       '@social-explorer/importers':
         specifier: workspace:*
         version: link:../../packages/importers
+      '@social-explorer/media-core':
+        specifier: workspace:*
+        version: link:../../packages/media-core
       '@social-explorer/security':
         specifier: workspace:*
         version: link:../../packages/security
@@ -222,6 +225,50 @@ importers:
         version: 5.1.0(@types/node@22.20.5)(vite@8.3.8(@types/node@22.20.5))
 
   packages/importers:
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 22.20.5
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      vitest:
+        specifier: 'catalog:'
+        version: 5.1.0(@types/node@22.20.5)(vite@8.3.8(@types/node@22.20.5))
+
+  packages/media-core:
+    dependencies:
+      '@social-explorer/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@social-explorer/database':
+        specifier: workspace:*
+        version: link:../database
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 22.20.5
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      vitest:
+        specifier: 'catalog:'
+        version: 5.1.0(@types/node@22.20.5)(vite@8.3.8(@types/node@22.20.5))
+
+  packages/media-importers:
+    dependencies:
+      '@social-explorer/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@social-explorer/database':
+        specifier: workspace:*
+        version: link:../database
+      '@social-explorer/importers':
+        specifier: workspace:*
+        version: link:../importers
+      '@social-explorer/media-core':
+        specifier: workspace:*
+        version: link:../media-core
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
@@ -1558,7 +1605,7 @@ snapshots:
 
   '@types/better-sqlite3@9.6.0':
     dependencies:
-      '@types/node': 22.20.5
+      '@types/node': 24.19.2
 
   '@types/chai@5.2.3':
     dependencies:

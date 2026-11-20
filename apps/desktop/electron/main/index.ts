@@ -111,6 +111,7 @@ function registerIpc(active: AppRuntime): void {
       repositories: active.repositories,
       db: active.db,
       appVersion: app.getVersion(),
+      userDataDir: active.paths.root,
       pickArchiveFile: pickArchiveFile,
     }),
     isTrustedSender: (url) => isTrustedAppUrl(url, trusted),
