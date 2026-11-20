@@ -1,0 +1,63 @@
+{
+  "$comment": "100% synthetic normalized port events for connector-core tests. Fake IDs only (555-01xx style numbers).",
+  "self": "15551000009@s.whatsapp.net",
+  "history": [
+    {
+      "chats": [
+        { "id": "15551000001@s.whatsapp.net", "name": "Synthetic Private 01" },
+        { "id": "120363000000000001@g.us", "name": "Synthetic Group 01" }
+      ],
+      "contacts": [
+        { "id": "15551000001@s.whatsapp.net", "name": "Alice Example" },
+        { "id": "15551000002@s.whatsapp.net", "notify": "Bob Sample", "lid": "00000002@lid" }
+      ],
+      "messages": [
+        {
+          "key": { "remoteJid": "15551000001@s.whatsapp.net", "id": "SYNTH-H-0001", "fromMe": false },
+          "timestampMs": 1768468800000,
+          "kind": "text",
+          "text": "history message one",
+          "hasAttachment": false
+        },
+        {
+          "key": {
+            "remoteJid": "120363000000000001@g.us",
+            "id": "SYNTH-H-0002",
+            "fromMe": false,
+            "participant": "15551000002@s.whatsapp.net"
+          },
+          "timestampMs": 1768468860000,
+          "kind": "text",
+          "text": "history group message",
+          "hasAttachment": false
+        }
+      ],
+      "progress": 50,
+      "isLatest": false
+    },
+    {
+      "chats": [],
+      "contacts": [],
+      "messages": [
+        {
+          "key": { "remoteJid": "15551000001@s.whatsapp.net", "id": "SYNTH-H-0003", "fromMe": true },
+          "timestampMs": 1768468740000,
+          "kind": "image",
+          "text": "synthetic caption",
+          "hasAttachment": true
+        }
+      ],
+      "progress": 100,
+      "isLatest": true
+    }
+  ],
+  "live": [
+    {
+      "key": { "remoteJid": "15551000001@s.whatsapp.net", "id": "SYNTH-L-0004", "fromMe": false },
+      "timestampMs": 1768468920000,
+      "kind": "text",
+      "text": "live message",
+      "hasAttachment": false
+    }
+  ]
+}
