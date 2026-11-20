@@ -2,14 +2,22 @@ import { defineConfig, devices } from "@playwright/test";
 
 const previewHost = "127.0.0.1";
 const previewPort = 4173;
+const isCi = Boolean(process.env["CI"]);
+
+/** In CI, workflow runs root `pnpm build` (includes renderer). Locally, build inside webServer if needed. */
+const previewCmd =
+  "pnpm exec vite preview --config vite.config.ts --host 127.0.0.1 --port 4173";
+const webServerCommand = isCi
+  ? previewCmd
+  : `pnpm exec vite build && ${previewCmd}`;
 
 export default defineConfig({
   testDir: "./e2e",
   fullyParallel: false,
-  forbidOnly: Boolean(process.env["CI"]),
-  retries: process.env["CI"] ? 1 : 0,
+  forbidOnly: isCi,
+  retries: isCi ? 1 : 0,
   workers: 1,
-  reporter: process.env["CI"] ? "github" : "list",
+  reporter: isCi ? "github" : "list",
   timeout: 60_000,
   use: {
     baseURL: `http://${previewHost}:${String(previewPort)}`,
@@ -28,12 +36,12 @@ export default defineConfig({
     },
   ],
   webServer: {
-    // Renderer preview only (mock IPC); workspace packages must already be built (`pnpm build` at repo root).
-    command:
-      "pnpm exec vite build && pnpm exec vite preview --config vite.config.ts --host 127.0.0.1 --port 4173",
+    command: webServerCommand,
     url: `http://${previewHost}:${String(previewPort)}`,
-    reuseExistingServer: !process.env["CI"],
+    reuseExistingServer: !isCi,
     timeout: 180_000,
     cwd: import.meta.dirname,
+    stdout: "pipe",
+    stderr: "pipe",
   },
 });
