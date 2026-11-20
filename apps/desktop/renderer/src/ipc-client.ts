@@ -20,6 +20,21 @@ export function createMockApi(): SocialExplorerApi {
     getTemporalReadModel: unsupported,
     listMediaReferences: () => Promise.resolve([]),
     getEntitlement: () => Promise.resolve(DEFAULT_FREE_ENTITLEMENT),
+    pickArchiveFile: () => Promise.resolve({ canceled: true }),
+    previewArchive: unsupported,
+    confirmArchive: unsupported,
+    commitArchive: unsupported,
+    cancelArchive: () => Promise.resolve({ canceled: false }),
+    listContacts: () => Promise.resolve([]),
+    listGroups: () => Promise.resolve([]),
+    mergeContacts: unsupported,
+    unmergeContact: unsupported,
+    listContactMerges: () => Promise.resolve([]),
+    getGlobalAnalytics: unsupported,
+    getContactAnalytics: unsupported,
+    getGroupAnalytics: unsupported,
+    getRelations: unsupported,
+    rebuildAnalytics: unsupported,
   };
 }
 

@@ -10,6 +10,9 @@ import type { IpcEnvelope, IpcFailure } from "../../shared/bridge.js";
 
 export class UnsupportedIpcError extends Error {}
 
+/** A handler rejection whose message is authored by us and safe to show the renderer. */
+export class IpcRejectedError extends Error {}
+
 export type IpcHandlers = {
   readonly [C in IpcChannel]?: (request: IpcRequest<C>) => IpcResponse<C> | Promise<IpcResponse<C>>;
 };
@@ -67,6 +70,9 @@ export function createIpcRouter(options: IpcRouterOptions): IpcRouter {
       } catch (error) {
         if (error instanceof UnsupportedIpcError) {
           return fail("UNSUPPORTED", "channel not available yet");
+        }
+        if (error instanceof IpcRejectedError) {
+          return fail("INVALID_REQUEST", error.message);
         }
         options.logger?.error("ipc handler failed", { channel, error });
         return fail("INTERNAL_ERROR", "internal error");

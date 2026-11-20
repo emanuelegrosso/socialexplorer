@@ -51,6 +51,12 @@ export const dailyMarkerSchema = z.strictObject({
   label: z.string(),
 });
 
+export const hourMarkSchema = z.strictObject({
+  timestamp: isoUtcSchema,
+  hour: z.number().int().min(0).max(23),
+  date: localDateSchema,
+});
+
 export const coverageSchema = z.strictObject({
   start: isoUtcSchema.optional(),
   end: isoUtcSchema.optional(),
@@ -71,6 +77,12 @@ export const temporalFlowReadModelSchema = z.strictObject({
   events: z.array(temporalEventSchema),
   arcs: z.array(temporalArcSchema),
   dailyMarkers: z.array(dailyMarkerSchema),
+  hourMarks: z.array(hourMarkSchema),
+  lod: z.strictObject({
+    level: z.enum(["overview", "mid", "detail"]),
+    bucketSeconds: z.number().int().nonnegative(),
+  }),
+  layoutVersion: z.number().int().positive(),
   coverage: coverageSchema,
 });
 
@@ -80,5 +92,6 @@ export type TemporalEntityViewModel = z.infer<typeof temporalEntitySchema>;
 export type TemporalEventViewModel = z.infer<typeof temporalEventSchema>;
 export type TemporalArcViewModel = z.infer<typeof temporalArcSchema>;
 export type DailyMarkerViewModel = z.infer<typeof dailyMarkerSchema>;
+export type HourMarkViewModel = z.infer<typeof hourMarkSchema>;
 export type CoverageViewModel = z.infer<typeof coverageSchema>;
 export type TemporalFlowReadModel = z.infer<typeof temporalFlowReadModelSchema>;

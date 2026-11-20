@@ -20,6 +20,9 @@
   },
   "dependencies": {
     "@social-explorer/contracts": "workspace:*",
+    "@social-explorer/domain": "workspace:*",
+    "@social-explorer/importers": "workspace:*",
+    "@social-explorer/shared": "workspace:*",
     "better-sqlite3": "catalog:"
   },
   "devDependencies": {

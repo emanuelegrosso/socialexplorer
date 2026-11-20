@@ -25,7 +25,7 @@ export class IpcError extends Error {
   }
 }
 
-/** Narrow, read-only surface exposed to the renderer as `window.socialExplorer`. */
+/** Narrow, validated surface exposed to the renderer as `window.socialExplorer`. */
 export interface SocialExplorerApi {
   getAppInfo(): Promise<IpcResponse<"app:get-info">>;
   listDatasets(): Promise<IpcResponse<"dataset:list">>;
@@ -42,6 +42,41 @@ export interface SocialExplorerApi {
     request: IpcRequest<"media:list-references">,
   ): Promise<IpcResponse<"media:list-references">>;
   getEntitlement(): Promise<IpcResponse<"entitlement:get">>;
+  pickArchiveFile(): Promise<IpcResponse<"archive-import:pick-file">>;
+  previewArchive(
+    request: IpcRequest<"archive-import:preview">,
+  ): Promise<IpcResponse<"archive-import:preview">>;
+  confirmArchive(
+    request: IpcRequest<"archive-import:confirm">,
+  ): Promise<IpcResponse<"archive-import:confirm">>;
+  commitArchive(
+    request: IpcRequest<"archive-import:commit">,
+  ): Promise<IpcResponse<"archive-import:commit">>;
+  cancelArchive(
+    request: IpcRequest<"archive-import:cancel">,
+  ): Promise<IpcResponse<"archive-import:cancel">>;
+  listContacts(request: IpcRequest<"contact:list">): Promise<IpcResponse<"contact:list">>;
+  listGroups(request: IpcRequest<"group:list">): Promise<IpcResponse<"group:list">>;
+  mergeContacts(request: IpcRequest<"contact:merge">): Promise<IpcResponse<"contact:merge">>;
+  unmergeContact(request: IpcRequest<"contact:unmerge">): Promise<IpcResponse<"contact:unmerge">>;
+  listContactMerges(
+    request: IpcRequest<"contact:list-merges">,
+  ): Promise<IpcResponse<"contact:list-merges">>;
+  getGlobalAnalytics(
+    request: IpcRequest<"analytics:get-global">,
+  ): Promise<IpcResponse<"analytics:get-global">>;
+  getContactAnalytics(
+    request: IpcRequest<"analytics:get-contact">,
+  ): Promise<IpcResponse<"analytics:get-contact">>;
+  getGroupAnalytics(
+    request: IpcRequest<"analytics:get-group">,
+  ): Promise<IpcResponse<"analytics:get-group">>;
+  getRelations(
+    request: IpcRequest<"analytics:get-relations">,
+  ): Promise<IpcResponse<"analytics:get-relations">>;
+  rebuildAnalytics(
+    request: IpcRequest<"analytics:rebuild">,
+  ): Promise<IpcResponse<"analytics:rebuild">>;
 }
 
 export type IpcInvoke = (channel: IpcChannel, request: unknown) => Promise<unknown>;
@@ -76,5 +111,20 @@ export function createBridge(invoke: IpcInvoke): SocialExplorerApi {
     getTemporalReadModel: (request) => call("temporal:get-read-model", request),
     listMediaReferences: (request) => call("media:list-references", request),
     getEntitlement: () => call("entitlement:get", {}),
+    pickArchiveFile: () => call("archive-import:pick-file", {}),
+    previewArchive: (request) => call("archive-import:preview", request),
+    confirmArchive: (request) => call("archive-import:confirm", request),
+    commitArchive: (request) => call("archive-import:commit", request),
+    cancelArchive: (request) => call("archive-import:cancel", request),
+    listContacts: (request) => call("contact:list", request),
+    listGroups: (request) => call("group:list", request),
+    mergeContacts: (request) => call("contact:merge", request),
+    unmergeContact: (request) => call("contact:unmerge", request),
+    listContactMerges: (request) => call("contact:list-merges", request),
+    getGlobalAnalytics: (request) => call("analytics:get-global", request),
+    getContactAnalytics: (request) => call("analytics:get-contact", request),
+    getGroupAnalytics: (request) => call("analytics:get-group", request),
+    getRelations: (request) => call("analytics:get-relations", request),
+    rebuildAnalytics: (request) => call("analytics:rebuild", request),
   };
 }

@@ -8,10 +8,11 @@ const TRUSTED = "file:///app/renderer/index.html";
 const isTrustedSender = (url: string | undefined): boolean => url === TRUSTED;
 
 function setup() {
-  const repositories = createRepositories(openMemoryDatabase());
+  const db = openMemoryDatabase();
+  const repositories = createRepositories(db);
   const sink = createMemoryLogSink();
   const router = createIpcRouter({
-    handlers: createIpcHandlers({ repositories, appVersion: "1.2.3" }),
+    handlers: createIpcHandlers({ repositories, db, appVersion: "1.2.3" }),
     isTrustedSender,
     logger: createLogger({ sink }),
   });
@@ -94,13 +95,6 @@ describe("ipc router", () => {
   });
 
   it("reports unsupported channels without leaking internals", async () => {
-    const { router } = setup();
-    expect(
-      await router.handle("temporal:get-read-model", { datasetId: "d1", preset: "7d" }, TRUSTED),
-    ).toMatchObject({
-      ok: false,
-      error: { code: "UNSUPPORTED" },
-    });
     const bare = createIpcRouter({ handlers: {}, isTrustedSender });
     expect(await bare.handle("dataset:list", {}, TRUSTED)).toMatchObject({
       error: { code: "UNSUPPORTED" },
