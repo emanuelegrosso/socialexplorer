@@ -1,0 +1,57 @@
+# WX-063 — Windows packaging (Electron Builder)
+# Signing: set CSC_LINK / CSC_KEY_PASSWORD (or WIN_CSC_LINK) via CI secrets — never commit certs.
+
+appId: com.socialexplorer.desktop
+productName: SocialExplorer
+copyright: Copyright © Social Explorer
+artifactName: "${productName}-${version}-${os}-${arch}.${ext}"
+
+directories:
+  output: release
+  buildResources: build
+
+files:
+  - dist/**/*
+  - package.json
+  - "!**/*.test.*"
+  - "!**/*.map"
+
+asar: true
+# Native module unpacking is handled automatically after install-app-deps flattens deps.
+
+extraMetadata:
+  main: dist/electron/main/index.js
+
+forceCodeSigning: false
+
+win:
+  signAndEditExecutable: false
+  target:
+    - target: nsis
+      arch:
+        - x64
+    - target: portable
+      arch:
+        - x64
+  # Icon optional until brand assets land (see docs/windows-packaging.md).
+  publisherName: Social Explorer
+  verifyUpdateCodeSignature: true
+  signtoolOptions:
+    rfc3161TimeStampServer: http://timestamp.digicert.com
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  allowElevation: true
+  deleteAppDataOnUninstall: false
+  artifactName: "${productName}-Setup-${version}.${ext}"
+
+portable:
+  artifactName: "${productName}-Portable-${version}.${ext}"
+
+# Default feed placeholders; runtime channel selection is entitlement-driven (WX-064).
+publish:
+  provider: generic
+  url: ${env.SOCIAL_EXPLORER_UPDATE_FEED_STABLE}
+  channel: stable

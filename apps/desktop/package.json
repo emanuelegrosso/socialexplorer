@@ -9,15 +9,23 @@
     "build": "tsc -p tsconfig.electron.json && vite build --config vite.preload.config.ts && vite build",
     "typecheck": "tsc -p tsconfig.json",
     "start": "electron .",
-    "test": "vitest run electron shared renderer"
+    "test": "vitest run electron shared renderer",
+    "rebuild:native": "electron-rebuild -f -w better-sqlite3",
+    "prepackage": "electron-builder install-app-deps",
+    "prepackage:dir": "electron-builder install-app-deps",
+    "package": "pnpm run build && pnpm run rebuild:native && electron-builder --config electron-builder.yml",
+    "package:dir": "pnpm run build && pnpm run rebuild:native && electron-builder --dir --config electron-builder.yml",
+    "package:win-dir": "pnpm run build && pnpm run rebuild:native && CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --win --dir --config electron-builder.yml"
   },
   "dependencies": {
     "@social-explorer/contracts": "workspace:*",
     "@social-explorer/database": "workspace:*",
+    "@social-explorer/licensing": "workspace:*",
     "@social-explorer/security": "workspace:*",
     "@social-explorer/shared": "workspace:*",
     "react": "19.3.1",
     "react-dom": "19.3.1",
+    "zod": "catalog:",
     "zustand": "catalog:"
   },
   "devDependencies": {
@@ -25,9 +33,16 @@
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "6.3.0",
+    "@electron/rebuild": "3.7.1",
     "electron": "45.4.1",
+    "electron-builder": "25.1.8",
+    "electron-rebuild": "3.2.9",
+    "electron-updater": "6.6.2",
     "typescript": "catalog:",
     "vite": "8.3.8",
     "vitest": "catalog:"
+  },
+  "build": {
+    "extends": null
   }
 }

@@ -2,9 +2,11 @@ import { app, BrowserWindow, ipcMain, session, type IpcMainInvokeEvent } from "e
 import { IPC_CHANNEL_NAMES } from "@social-explorer/contracts";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { freeEntitlement } from "@social-explorer/licensing";
 import { createIpcHandlers } from "./ipc-handlers.js";
 import { createIpcRouter } from "./ipc-router.js";
 import { createAppRuntime, type AppRuntime } from "./runtime.js";
+import { createUpdateCoordinator } from "./update/coordinator.js";
 import {
   buildCsp,
   decideNavigation,
@@ -122,6 +124,14 @@ if (!app.requestSingleInstanceLock()) {
       logLevel: process.env["SOCIAL_EXPLORER_LOG_LEVEL"],
     });
     registerIpc(runtime);
+    const updateCoordinator = createUpdateCoordinator({
+      logger: runtime.logger,
+      getEntitlement: () => freeEntitlement(),
+      isPackaged: app.isPackaged,
+      connectorAbiLabel: process.env["SOCIAL_EXPLORER_CONNECTOR_ABI"] ?? "baileys-pinned-unbundled",
+    });
+    updateCoordinator.markRollbackAnchor(app.getVersion());
+    void updateCoordinator.prepareCheck(Date.now());
     mainWindow = createWindow();
     app.on("activate", () => {
       if (BrowserWindow.getAllWindows().length === 0) {
