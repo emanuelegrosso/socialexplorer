@@ -4,3 +4,5 @@ export * from "./ids.js";
 export * from "./resolution.js";
 export * from "./sensitive.js";
 export * from "./time.js";
+export * from "./contact-identity.js";
+export * from "./palette.js";

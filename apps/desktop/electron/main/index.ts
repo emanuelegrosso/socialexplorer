@@ -1,6 +1,7 @@
-import { app, BrowserWindow, ipcMain, session, type IpcMainInvokeEvent } from "electron";
+import { app, BrowserWindow, dialog, ipcMain, session, type IpcMainInvokeEvent } from "electron";
 import { IPC_CHANNEL_NAMES } from "@social-explorer/contracts";
-import { dirname, join } from "node:path";
+import { readFile, stat } from "node:fs/promises";
+import { basename, dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { createIpcHandlers } from "./ipc-handlers.js";
 import { createIpcRouter } from "./ipc-router.js";
@@ -82,11 +83,35 @@ function installSecurity(): void {
   });
 }
 
+const MAX_ARCHIVE_BYTES = 2 * 1024 * 1024 * 1024;
+
+async function pickArchiveFile(): Promise<{ name: string; data: Uint8Array } | undefined> {
+  const options = {
+    title: "Select a WhatsApp export",
+    properties: ["openFile" as const],
+    filters: [{ name: "WhatsApp export", extensions: ["txt", "zip"] }],
+  };
+  const chosen =
+    mainWindow === undefined
+      ? await dialog.showOpenDialog(options)
+      : await dialog.showOpenDialog(mainWindow, options);
+  const filePath = chosen.filePaths[0];
+  if (chosen.canceled || filePath === undefined) {
+    return undefined;
+  }
+  if ((await stat(filePath)).size > MAX_ARCHIVE_BYTES) {
+    throw new Error("archive too large");
+  }
+  return { name: basename(filePath), data: await readFile(filePath) };
+}
+
 function registerIpc(active: AppRuntime): void {
   const router = createIpcRouter({
     handlers: createIpcHandlers({
       repositories: active.repositories,
+      db: active.db,
       appVersion: app.getVersion(),
+      pickArchiveFile: pickArchiveFile,
     }),
     isTrustedSender: (url) => isTrustedAppUrl(url, trusted),
     logger: active.logger,

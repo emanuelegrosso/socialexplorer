@@ -29,6 +29,13 @@ const CORE = [
   "annotations",
 ];
 const ANALYTICS = ["analytics_daily", "analytics_hourly"];
+const IDENTITY = [
+  "contact_merges",
+  "message_provenance",
+  "import_checkpoints",
+  "import_batch_contacts",
+  "import_batch_conversations",
+];
 const MEDIA = [
   "media_assets",
   "media_references",
@@ -48,30 +55,31 @@ describe("migrations", () => {
     for (const dir of dirs.splice(0)) rmSync(dir, { recursive: true, force: true });
   });
 
-  it("loads three ordered, checksummed migration files", () => {
+  it("loads four ordered, checksummed migration files", () => {
     const migrations = loadMigrations();
     expect(migrations.map((m) => [m.version, m.name])).toEqual([
       [1, "core_sync"],
       [2, "analytics"],
       [3, "media_storytelling"],
+      [4, "identity_ingestion"],
     ]);
-    expect(new Set(migrations.map((m) => m.checksum)).size).toBe(3);
+    expect(new Set(migrations.map((m) => m.checksum)).size).toBe(4);
   });
 
-  it("creates exactly the 24 canonical tables", () => {
+  it("creates exactly the 29 canonical tables", () => {
     const db = openMemoryDatabase();
     dbs.push(db);
     const tables = listUserTables(db);
-    expect(tables).toHaveLength(24);
-    expect(tables).toEqual([...CORE, ...ANALYTICS, ...MEDIA].sort());
+    expect(tables).toHaveLength(29);
+    expect(tables).toEqual([...CORE, ...ANALYTICS, ...MEDIA, ...IDENTITY].sort());
   });
 
   it("records versions and is idempotent on re-run", () => {
     const db = openMemoryDatabase();
     dbs.push(db);
-    expect(listAppliedMigrations(db).map((m) => m.version)).toEqual([1, 2, 3]);
+    expect(listAppliedMigrations(db).map((m) => m.version)).toEqual([1, 2, 3, 4]);
     expect(migrateDatabase(db)).toBe(0);
-    expect(listAppliedMigrations(db)).toHaveLength(3);
+    expect(listAppliedMigrations(db)).toHaveLength(4);
   });
 
   it("rejects edited migrations and databases newer than the app", () => {

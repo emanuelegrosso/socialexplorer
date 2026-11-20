@@ -1,3 +1,4 @@
+import { createIdentityRepository } from "./identity.js";
 import { rebuildAnalytics } from "./analytics.js";
 import type { SqliteDatabase } from "./open.js";
 import {
@@ -15,6 +16,9 @@ import { createSettingsRepository, createSyncRepository } from "./repositories-s
 
 export * from "./analytics.js";
 export * from "./files.js";
+export * from "./identity.js";
+export * from "./importer-bridge.js";
+export * from "./ingest.js";
 export * from "./migrate.js";
 export * from "./open.js";
 export * from "./repositories-core.js";
@@ -35,6 +39,7 @@ export interface Repositories {
   readonly settings: ReturnType<typeof createSettingsRepository>;
   readonly annotations: ReturnType<typeof createAnnotationRepository>;
   readonly media: ReturnType<typeof createMediaRepository>;
+  readonly identity: ReturnType<typeof createIdentityRepository>;
   readonly rebuildAnalytics: (datasetId: string) => { daily: number; hourly: number };
 }
 
@@ -51,6 +56,7 @@ export function createRepositories(db: SqliteDatabase): Repositories {
     settings: createSettingsRepository(db),
     annotations: createAnnotationRepository(db),
     media: createMediaRepository(db),
+    identity: createIdentityRepository(db),
     rebuildAnalytics: (datasetId) => rebuildAnalytics(db, datasetId),
   };
 }

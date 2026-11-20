@@ -1,5 +1,6 @@
 import {
   createRepositories,
+  markInterruptedImports,
   openDatabase,
   type Repositories,
   type SqliteDatabase,
@@ -43,6 +44,10 @@ export function createAppRuntime(options: RuntimeOptions): AppRuntime {
   shutdown.register("logger", () => logger.close());
 
   const db = openDatabase({ filePath: paths.databaseFile });
+  const interrupted = markInterruptedImports(db);
+  if (interrupted.length > 0) {
+    logger.warn("interrupted imports marked resumable", { count: interrupted.length });
+  }
   shutdown.register("sqlite", () => {
     db.pragma("wal_checkpoint(TRUNCATE)");
     db.close();

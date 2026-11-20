@@ -38,3 +38,28 @@ export type ContactIdentifier = z.infer<typeof contactIdentifierSchema>;
 export type Contact = z.infer<typeof contactSchema>;
 export type Conversation = z.infer<typeof conversationSchema>;
 export type ConversationParticipant = z.infer<typeof conversationParticipantSchema>;
+
+export const contactMergeSchema = z.strictObject({
+  id: idSchema,
+  datasetId: idSchema,
+  primaryContactId: idSchema,
+  secondaryContactId: idSchema,
+  mergedAt: isoUtcSchema,
+  unmergedAt: isoUtcSchema.optional(),
+  reason: z.string().optional(),
+});
+
+export const contactSummarySchema = contactSchema.extend({
+  mergedContactIds: z.array(idSchema),
+});
+
+export const groupSummarySchema = z.strictObject({
+  conversationId: idSchema,
+  title: z.string(),
+  participantContactIds: z.array(idSchema),
+  messageCount: z.number().int().nonnegative(),
+});
+
+export type ContactMerge = z.infer<typeof contactMergeSchema>;
+export type ContactSummary = z.infer<typeof contactSummarySchema>;
+export type GroupSummary = z.infer<typeof groupSummarySchema>;

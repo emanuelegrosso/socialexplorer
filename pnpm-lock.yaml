@@ -71,18 +71,30 @@ importers:
 
   apps/desktop:
     dependencies:
+      '@social-explorer/analytics':
+        specifier: workspace:*
+        version: link:../../packages/analytics
       '@social-explorer/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
       '@social-explorer/database':
         specifier: workspace:*
         version: link:../../packages/database
+      '@social-explorer/domain':
+        specifier: workspace:*
+        version: link:../../packages/domain
+      '@social-explorer/importers':
+        specifier: workspace:*
+        version: link:../../packages/importers
       '@social-explorer/security':
         specifier: workspace:*
         version: link:../../packages/security
       '@social-explorer/shared':
         specifier: workspace:*
         version: link:../../packages/shared
+      '@social-explorer/visualization-model':
+        specifier: workspace:*
+        version: link:../../packages/visualization-model
       react:
         specifier: 19.3.1
         version: 19.3.1
@@ -118,6 +130,25 @@ importers:
         specifier: 'catalog:'
         version: 5.1.0(@types/node@22.20.5)(vite@8.3.8(@types/node@22.20.5))
 
+  packages/analytics:
+    dependencies:
+      '@social-explorer/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@social-explorer/database':
+        specifier: workspace:*
+        version: link:../database
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 22.20.5
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      vitest:
+        specifier: 'catalog:'
+        version: 5.1.0(@types/node@22.20.5)(vite@8.3.8(@types/node@22.20.5))
+
   packages/contracts:
     dependencies:
       zod:
@@ -139,6 +170,15 @@ importers:
       '@social-explorer/contracts':
         specifier: workspace:*
         version: link:../contracts
+      '@social-explorer/domain':
+        specifier: workspace:*
+        version: link:../domain
+      '@social-explorer/importers':
+        specifier: workspace:*
+        version: link:../importers
+      '@social-explorer/shared':
+        specifier: workspace:*
+        version: link:../shared
       better-sqlite3:
         specifier: 'catalog:'
         version: 13.1.1
@@ -175,6 +215,18 @@ importers:
         specifier: 'catalog:'
         version: 5.1.0(@types/node@22.20.5)(vite@8.3.8(@types/node@22.20.5))
 
+  packages/importers:
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 22.20.5
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      vitest:
+        specifier: 'catalog:'
+        version: 5.1.0(@types/node@22.20.5)(vite@8.3.8(@types/node@22.20.5))
+
   packages/security:
     dependencies:
       '@napi-rs/keyring':
@@ -195,6 +247,25 @@ importers:
         version: 5.1.0(@types/node@22.20.5)(vite@8.3.8(@types/node@22.20.5))
 
   packages/shared:
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 22.20.5
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      vitest:
+        specifier: 'catalog:'
+        version: 5.1.0(@types/node@22.20.5)(vite@8.3.8(@types/node@22.20.5))
+
+  packages/visualization-model:
+    dependencies:
+      '@social-explorer/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@social-explorer/domain':
+        specifier: workspace:*
+        version: link:../domain
     devDependencies:
       '@types/node':
         specifier: 'catalog:'

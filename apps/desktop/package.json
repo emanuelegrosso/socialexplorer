@@ -12,10 +12,14 @@
     "test": "vitest run electron shared renderer"
   },
   "dependencies": {
+    "@social-explorer/analytics": "workspace:*",
     "@social-explorer/contracts": "workspace:*",
     "@social-explorer/database": "workspace:*",
+    "@social-explorer/domain": "workspace:*",
+    "@social-explorer/importers": "workspace:*",
     "@social-explorer/security": "workspace:*",
     "@social-explorer/shared": "workspace:*",
+    "@social-explorer/visualization-model": "workspace:*",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "zustand": "catalog:"
