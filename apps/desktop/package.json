@@ -1,0 +1,43 @@
+{
+  "name": "@social-explorer/desktop",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/electron/main/index.js",
+  "scripts": {
+    "dev:renderer": "vite",
+    "build": "tsc -p tsconfig.electron.json && vite build --config vite.preload.config.ts && vite build",
+    "typecheck": "tsc -p tsconfig.json",
+    "start": "electron .",
+    "preview": "vite preview",
+    "test": "vitest run electron shared renderer",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@social-explorer/analytics": "workspace:*",
+    "@social-explorer/contracts": "workspace:*",
+    "@social-explorer/database": "workspace:*",
+    "@social-explorer/domain": "workspace:*",
+    "@social-explorer/importers": "workspace:*",
+    "@social-explorer/media-core": "workspace:*",
+    "@social-explorer/security": "workspace:*",
+    "@social-explorer/shared": "workspace:*",
+    "@social-explorer/visualization-model": "workspace:*",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "three": "^0.187.0",
+    "zustand": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@types/three": "^0.187.0",
+    "@vitejs/plugin-react": "6.3.0",
+    "@playwright/test": "1.56.1",
+    "electron": "45.4.1",
+    "typescript": "catalog:",
+    "vite": "8.3.8",
+    "vitest": "catalog:"
+  }
+}

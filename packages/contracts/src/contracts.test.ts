@@ -81,6 +81,9 @@ describe("canonical contracts", () => {
         },
       ],
       dailyMarkers: [{ date: "2026-01-15", timestamp: "2026-01-15T00:00:00Z", label: "15 Jan" }],
+      hourMarks: [{ timestamp: "2026-01-15T09:00:00Z", hour: 9, date: "2026-01-15" }],
+      lod: { level: "detail", bucketSeconds: 0 },
+      layoutVersion: 1,
       coverage: { messageCount: 1, partialMessageCount: 0, warnings: [] },
     };
     expect(temporalFlowReadModelSchema.safeParse(model).success).toBe(true);

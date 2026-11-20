@@ -1,16 +1,17 @@
-import { createHash } from "node:crypto";
+import { sha256 } from "@noble/hashes/sha2";
+import { bytesToHex, utf8ToBytes } from "@noble/hashes/utils";
 
 const FNV_OFFSET = 0xcbf29ce484222325n;
 const FNV_PRIME = 0x100000001b3n;
 const MASK_64 = 0xffffffffffffffffn;
 
 export function sha256Hex(material: string): string {
-  return createHash("sha256").update(material, "utf8").digest("hex");
+  return bytesToHex(sha256(utf8ToBytes(material)));
 }
 
 export function fnv1a64Hex(material: string): string {
   let hash = FNV_OFFSET;
-  for (const byte of Buffer.from(material, "utf8")) {
+  for (const byte of utf8ToBytes(material)) {
     hash ^= BigInt(byte);
     hash = (hash * FNV_PRIME) & MASK_64;
   }
