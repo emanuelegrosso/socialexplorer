@@ -28,7 +28,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "pnpm run build && pnpm exec vite preview --config vite.config.ts --host 127.0.0.1 --port 4173",
+    // Renderer preview only (mock IPC); workspace packages must already be built (`pnpm build` at repo root).
+    command:
+      "pnpm exec vite build && pnpm exec vite preview --config vite.config.ts --host 127.0.0.1 --port 4173",
     url: `http://${previewHost}:${String(previewPort)}`,
     reuseExistingServer: !process.env["CI"],
     timeout: 180_000,

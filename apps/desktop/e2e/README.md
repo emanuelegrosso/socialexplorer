@@ -12,7 +12,7 @@ CI-safe end-to-end tests for the **Vite renderer preview** with the built-in moc
 From the repository root:
 
 ```bash
-pnpm build
+pnpm build   # required: builds workspace packages the renderer imports
 pnpm --filter @social-explorer/desktop test:e2e
 ```
 
