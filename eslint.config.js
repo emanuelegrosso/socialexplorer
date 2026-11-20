@@ -13,6 +13,7 @@ export default tseslint.config(
       "fixtures/**",
       "playwright-report/**",
       "test-results/**",
+      "packages/**/test-fixtures/**",
     ],
   },
   eslint.configs.recommended,
@@ -34,5 +35,12 @@ export default tseslint.config(
   {
     files: ["**/*.{js,mjs,cjs}"],
     extends: [tseslint.configs.disableTypeChecked],
+  },
+  {
+    files: ["**/*.test.ts"],
+    rules: {
+      "@typescript-eslint/no-non-null-assertion": "off",
+      "@typescript-eslint/restrict-template-expressions": "off",
+    },
   },
 );
